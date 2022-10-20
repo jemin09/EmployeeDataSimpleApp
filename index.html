@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div id="show">
+    
+        </div>
+    </div>
+    
+<script>
+    const Employeejson=[
+    {empname:'Anna',empmail:'anna45@email.com',empage:27},
+    {empname:'Mary',empmail:'mary16@gmail.com',empage:30},
+    {empname:'Jack',empmail:'jack@gmail.com',empage:33},
+    {empname:'John',empmail:'john@gmail.com',empage:24},
+    {empname:'Edwards',empmail:'edwards@gmail.com',empage:29},
+    {empname:'Tim',empmail:'tim001@gmail.com',empage:31},
+    {empname:'Julia',empmail:'julia@gmail.com',empage:28},
+    {empname:'Steve',empmail:'steve@gmail.com',empage:25},
+    {empname:'Sam',empmail:'sam77@gmail.com',empage:33}
+    ];
+    const deptopt=[];
+    //navbar design
+    show();
+    function show(active=0){
+        console.log(active);
+        let str=makeNavbar(active);
+        // str+=listofEmployeeTable();
+        active === 1 ?str+=showEmployeeTable():str+='';
+        active === 2 ?str+=showForm():str+='';
+        active === 3 ?str+=departmentTable():str+='';
+        active === 4 ?str+=addNewDepartment():str+='';
+        // console.log(str);
+        document.getElementById('show').innerHTML=str;
+    }
+    function makeNavbar(active=0){
+        console.log(active);
+        //if active is 1:show Product ,2: Add a Product
+        console.log('in makeNav');
+        let str='<nav class="navbar navbar-expand-lg bg-light navbar-light mb-5">';
+        str+='<a class="navbar-brand" href="#">Employee System</a>';
+        str+='<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">';
+        str+='<span class="navbar-toggler-icon"></span>';
+        str+='</button>';
+        // console.log(str);
+        str+='<div class="collapse navbar-collapse" id="collapsibleNavbar">';  
+        str+='<ul class="navbar-nav">';
+            
+        let active1=active===1?'active':'';
+        let active2=active===2?'active':'';
+        let active3=active===3?'active':'';
+        let active4=active===4?'active':'';
+
+        str+='<li class="nav-item '+active1+' ">';
+        str+='<a class="nav-link" onclick="showEmpData()">Show Employees</a>';
+        str+='</li>';
+        str+='<li class="nav-item '+active2+' ">';
+        str+='<a class="nav-link" onclick="showEmpForm()">Add a Employee</a>';
+        str+='</li>';
+        str+='<li class="nav-item '+active3+' ">';
+        str+='<a class="nav-link" onclick="allDept()">Departments</a>';
+        str+='</li>';
+        str+='<li class="nav-item '+active4+' ">';
+        str+='<a class="nav-link" onclick="addDept()">Add a Dept</a>';
+        str+='</li>';
+        str+='</ul>';
+
+        str+='</div>';
+        str+='</nav>'; 
+        // console.log(str);
+        return str;
+    }
+    function showEmpData(){
+        show(1);
+    }
+    function showEmpForm(){
+        show(2);
+    }
+    function allDept(){
+        show(3);
+    }
+    function addDept(){
+        show(4);
+    }
+
+    
+    function showEmployeeTable(){
+        const arr=Employeejson.map(em=>{
+            let {empname,empmail,empage}=em;
+            let str='<div class="row border">';
+            str+='<div class="col-3">'+empname+'</div>';
+            str+='<div class="col-6">'+empmail+'</div>';
+            str+='<div class="col-3">'+empage+'</div>';
+            str+='</div>';  
+            return str;
+        });
+        let heading='<h2 class="text-center">List Of Persons</h2>';
+        let table='<div class="row bg-dark text-white">';
+            table+='<div class="col-3">Name</div>';
+            table+='<div class="col-6">Email</div>';
+            table+='<div class="col-3">Age</div>';
+            table+='</div>';
+            table+=arr.join('');
+            let str='<button class="btn btn-primary mt-3" onclick="listofEmployeeTable()">Change View</button>';
+            let html=heading+table+str;
+            return html;
+    }
+    function showForm(){
+        let str=makeTextField('name','Employee Name','Enter Employee name');
+        str+=makeTextField('email','Email','Enter Email');
+        str+=makeTextField('age','Age','Enter Age');
+        str+='<button class="btn btn-primary" onclick="submitProduct()">Submit</button>';
+        return (str);
+    }
+    function makeTextField(id,lebel,placeholder=''){
+        // console.log(id,lebel,placeholder);
+        let str='<div class="form-group">';
+        str+='<lebel>'+lebel+'</lebel>';
+        str+='<input type="text" class="form-control" id="'+id+'" placeholder="'+placeholder+'">';
+        str+='</div>';
+        console.log(str);
+        return str;
+    }
+    function submitProduct(){
+        let Ename=document.getElementById('name').value;
+        let Email=document.getElementById('email').value;
+        let Eage=document.getElementById('age').value;
+        let pr={empname:Ename,empmail:Email,empage:Eage};
+        Employeejson.push(pr);
+        // showEmployeeTable();
+        show(active=1);
+    }
+
+
+    function listofEmployeeTable(){
+        const arr=Employeejson.map(em=>{            
+            let {empname,empmail,empage}=em;
+            let str='<div class="col-4 col1">';
+            str+='<lebel>Name  :  </lebel>'+empname+'<br>';
+            str+='<lebel>Email   :  </lebel>'+empmail+'</br>';
+            str+='<lebel>Age   :  </lebel>'+empage+'</div>';
+            return str;
+        });
+        let heading='<h2 class="text-center">List Of Persons </h2>';
+        let table='<div class="row bg-light text-black d-flex border">';
+        table+=arr.join('');
+        table+='</div>';
+        let str='<button class="btn btn-primary mt-3" onclick="showEmpData()">Original View</button>';
+               
+        let str1=makeNavbar(0);
+        let html=str1+heading+table+str;  
+        document.getElementById('show').innerHTML=html;
+
+    }
+
+
+    function departmentTable(){
+        const arr=deptopt.map(dp=>{
+            // let str='<div class="col-12 col1">';
+            // str+=dp;
+            // str+='</div>';
+            // return str;
+
+            
+            let str='<div class="col-12 col1">'+dp+'</div>';
+            return str;
+        });
+        if(arr.length===0){
+            let str='<h3>No Department Has been defined<h3>';
+                return str;
+        }
+        else{
+            let heading='<h2 class="text-center">List Of Persons </h2>';
+            let table='<div class="row bg-light text-black d-flex border">';
+            table+=arr.join('');
+            table+='</div>';
+            let str=heading+table;
+            return str;       
+        }        
+    }
+
+    function addNewDepartment(){
+        let str=makeTextField('dept','Name of the Department','Enter Department');
+        str+='<button class="btn btn-primary" onclick="submitDepartment()">Submit</button>';
+        return (str);
+    }
+
+    function submitDepartment(){
+        let department=document.getElementById('dept').value;
+        deptopt.push(department);
+        // departmentTable();
+        show(active=3);
+    }
+
+</script>
+
+<style>
+    .col1{
+        border: 2px black solid;
+       /* height: 70px; */
+    }
+    .col1 lebel{
+        color: red;
+    }
+    
+</style>
+</body>
+</html>
+    
+</body>
+</html>
